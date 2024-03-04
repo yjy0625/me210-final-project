@@ -9,26 +9,26 @@ LineSensor::LineSensor() {
 	digitalWrite(LED_BUILTIN, HIGH);
 
 	for (uint16_t i = 0; i < 400; i++) {
-    	qtr.calibrate();
-    }
-    digitalWrite(LED_BUILTIN, LOW);
+    qtr.calibrate();
+  }
+  digitalWrite(LED_BUILTIN, LOW);
 
-    Serial.begin(9600);
-    Serial.println("[line_sensor.cpp] Line Sensor Calibration Min Values:");
-    for (uint8_t i = 0; i < sensorCount; i++) {
-    	Serial.print(qtr.calibrationOn.minimum[i]);
-    	Serial.print(' ');
-    }
-    Serial.println();
+  Serial.begin(9600);
+  Serial.println("[line_sensor.cpp] Line Sensor Calibration Min Values:");
+  for (uint8_t i = 0; i < sensorCount; i++) {
+    Serial.print(qtr.calibrationOn.minimum[i]);
+    Serial.print(' ');
+  }
+  Serial.println();
 
-    Serial.println("[line_sensor.cpp] Line Sensor Calibration Max Values:");
-    for (uint8_t i = 0; i < sensorCount; i++) {
-    	Serial.print(qtr.calibrationOn.maximum[i]);
-    	Serial.print(' ');
-    }
-    Serial.println();
+  Serial.println("[line_sensor.cpp] Line Sensor Calibration Max Values:");
+  for (uint8_t i = 0; i < sensorCount; i++) {
+    Serial.print(qtr.calibrationOn.maximum[i]);
+    Serial.print(' ');
+  }
+  Serial.println();
 
-    delay(1000);
+  delay(1000);
 }
 
 
