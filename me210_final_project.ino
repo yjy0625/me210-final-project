@@ -8,12 +8,14 @@
 #define USE_TIMER_2 true
 #include "TimerInterrupt.h"
 
+Gyro gyro(ITimer1);
+
 void setup() {
-  // put your setup code here, to run once:
-  // biu
+  Serial.begin(9600);
+  Serial.println("Start");
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-
+  Serial.println(gyro.readAngX());
+  delay(1000);
 }

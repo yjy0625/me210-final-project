@@ -2,6 +2,10 @@
 #include "Arduino.h"
 
 
+int ProximitySensor::_outputPin, ProximitySensor::_inputPin;
+int ProximitySensor::cnt, ProximitySensor::on;
+
+
 ProximitySensor::ProximitySensor(int outputPin, int inputPin, TimerInterrupt timer) {
   _outputPin = outputPin;
   _inputPin = inputPin;

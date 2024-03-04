@@ -5,6 +5,12 @@
 #define GRYO_ADDR 0x68
 #define GYRO_FREQ 100
 
+
+float Gyro::dt;
+int16_t Gyro::acX, Gyro::acY, Gyro::acZ, Gyro::gyX, Gyro::gyY, Gyro::gyZ, Gyro::temp, Gyro::gyXOS, Gyro::gyYOS, Gyro::gyZOS;
+float Gyro::angX, Gyro::angY, Gyro::angZ;
+
+
 Gyro::Gyro(TimerInterrupt timer) {
   Wire.begin();
   Wire.beginTransmission(GRYO_ADDR);
