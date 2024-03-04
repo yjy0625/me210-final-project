@@ -1,9 +1,10 @@
 #include "line_sensor.h"
 
 
-LineSensor::LineSensor() {
+LineSensor::LineSensor(const int leftPin, const int midPin, const int rightPin) {
+  const uint8_t sensorPins[sensorCount] = {leftPin, midPin, rightPin};
 	qtr.setTypeRC();
-	qtr.setSensorPins((const uint8_t[]){3,4,5}, sensorCount);
+	qtr.setSensorPins(sensorPins, sensorCount);
 
 	pinMode(LED_BUILTIN, OUTPUT);
 	digitalWrite(LED_BUILTIN, HIGH);
@@ -47,4 +48,12 @@ uint8_t LineSensor::readMidValue() {
 uint8_t LineSensor::readRightValue() {
 	uint16_t position = qtr.readLineBlack(sensorValues);
 	return sensorValues[2];
+}
+
+bool LineSensor::dark(uint8_t v) {
+  return v > 600;
+}
+
+bool LineSensor::light(uint8_t v) {
+  return !dark(v);
 }
