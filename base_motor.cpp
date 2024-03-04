@@ -36,35 +36,45 @@ void BaseMotor::turnRight(float v) {
   setRightVoltage(v);
 }
 
-void BaseMotor::setLeftVoltage(float v) {
-  v = constrain(v, 0, 12); 
-  if (v > 0) {
-    digitalWrite(r1, 1);
-    digitalWrite(r2, 0);
-  }
-  else if (v < 0) {
-    digitalWrite(r1, 0);
-    digitalWrite(r2, 1);
-  }
-  else {
-    analogWrite(re, 0);
-    return;
-  }
-  analogWrite(re, map(abs(v), 0, 12, 0, 255));
+void BaseMotor::stopAll() {
+  setLeftVoltage(0);
+  setRightVoltage(0);
 }
 
 void BaseMotor::setRightVoltage(float v) {
-  v = v * 1.166;
+  v = v * MOTOR_SCALE;
   v = constrain(v, 0, 12); 
-  if (v > 0) {
-    digitalWrite(l1, 1);
-    digitalWrite(l2, 0);
-  } else if (v < 0) {
-    digitalWrite(l1, 0);
-    digitalWrite(l2, 1);
-  } else {
+  int speed = map(abs(v), 0, 12, 0, 255);
+  if (abs(v) < EPS){
     analogWrite(le, 0);
     return;
   }
-  analogWrite(le, map(abs(v), 0, 12, 0, 255));
+  int dir;
+  if (v > 0) {
+    dir = 1;
+  } else {
+    dir = 0
+  } 
+  digitalWrite(r1, 1 ^ dir ^ MOTOR_RIGHT_DIR);
+  digitalWrite(r2, 1 ^ dir ^ MOTOR_RIGHT_DIR);
+  analogWrite(re, speed);
+}
+
+void BaseMotor::setLeftVoltage(float v) {
+  v = v * MOTOR_SCALE;
+  v = constrain(v, 0, 12); 
+  int speed = map(abs(v), 0, 12, 0, 255);
+  if (abs(v) < EPS){
+    analogWrite(re, 0);
+    return;
+  }
+  int dir;
+  if (v > 0) {
+    dir = 1;
+  } else {
+    dir = 0
+  } 
+  digitalWrite(l1, 1 ^ dir ^ MOTOR_LEFT_DIR);
+  digitalWrite(l2, 1 ^ dir ^ MOTOR_LEFT_DIR);
+  analogWrite(le, speed);
 }
