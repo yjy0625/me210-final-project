@@ -6,18 +6,19 @@ int ProximitySensor::_outputPin, ProximitySensor::_inputPin;
 int ProximitySensor::cnt, ProximitySensor::on;
 
 
-ProximitySensor::ProximitySensor(int outputPin, int inputPin, TimerInterrupt timer) {
+ProximitySensor::ProximitySensor(int outputPin, int inputPin) {
   _outputPin = outputPin;
   _inputPin = inputPin;
+}
 
+void ProximitySensor::init(TimerInterrupt &timer) {
   cnt = 0;
   on = 1;
 
   timer.init();
   timer.setFrequency(1000 * 2, update);
-  Serial.begin(9600);
-  pinMode(outputPin, OUTPUT);
-  pinMode(inputPin, INPUT);
+  pinMode(_outputPin, OUTPUT);
+  pinMode(_inputPin, INPUT);
 }
 
 float ProximitySensor::read() {

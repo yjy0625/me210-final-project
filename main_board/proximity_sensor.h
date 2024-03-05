@@ -4,9 +4,14 @@
 #include "Arduino.h"
 #include "TimerInterrupt.hpp"
 
+#define PROXIMITY_SENSOR_OUTPUT_PIN 2
+#define PROXIMITY_SENSOR_INPUT_PIN 7
+
 class ProximitySensor {
 public:
-	ProximitySensor(int outputPin, int inputPin, TimerInterrupt timer);
+	ProximitySensor(int outputPin, int inputPin);
+  ProximitySensor() : ProximitySensor(PROXIMITY_SENSOR_OUTPUT_PIN, PROXIMITY_SENSOR_INPUT_PIN) {}
+  void init(TimerInterrupt &timer);
   float read();
 private:
   static int _outputPin, _inputPin;

@@ -16,6 +16,11 @@ BaseMotor::BaseMotor(int leftEn, int leftIn1, int leftIn2, int rightEn, int righ
   pinMode(r2, OUTPUT);
 }
 
+void BaseMotor::setVoltages(float vl, float vr) {
+  setLeftVoltage(vl);
+  setRightVoltage(vr);
+}
+
 void BaseMotor::moveForward(float v) {
   setLeftVoltage(v);
   setRightVoltage(v);
@@ -43,7 +48,7 @@ void BaseMotor::stopAll() {
 
 void BaseMotor::setRightVoltage(float v) {
   v = v * MOTOR_SCALE;
-  v = constrain(v, 0, 12); 
+  v = constrain(v, -12, 12); 
   int speed = map(abs(v), 0, 12, 0, 255);
   if (abs(v) < EPS){
     analogWrite(le, 0);
@@ -53,16 +58,35 @@ void BaseMotor::setRightVoltage(float v) {
   if (v > 0) {
     dir = 1;
   } else {
-    dir = 0
+    dir = 0;
   } 
+  Serial.print("Setting right voltage to ");
+  Serial.println(v);
   digitalWrite(r1, 1 ^ dir ^ MOTOR_RIGHT_DIR);
-  digitalWrite(r2, 1 ^ dir ^ MOTOR_RIGHT_DIR);
+  digitalWrite(r2, 0 ^ dir ^ MOTOR_RIGHT_DIR);
   analogWrite(re, speed);
+
+  return;
+
+  Serial.print("Setting digital pin");
+  Serial.println(r1);
+  Serial.println(1 ^ dir ^ MOTOR_RIGHT_DIR);
+  Serial.println(digitalRead(r1));
+
+  Serial.print("Setting digital pin");
+  Serial.println(r2);
+  Serial.println(0 ^ dir ^ MOTOR_RIGHT_DIR);
+  Serial.println(digitalRead(r2));
+
+  Serial.print("Setting analog pin");
+  Serial.println(re);
+  Serial.println(speed);
+  Serial.println(analogRead(re));
 }
 
 void BaseMotor::setLeftVoltage(float v) {
   v = v * MOTOR_SCALE;
-  v = constrain(v, 0, 12); 
+  v = constrain(v, -12, 12); 
   int speed = map(abs(v), 0, 12, 0, 255);
   if (abs(v) < EPS){
     analogWrite(re, 0);
@@ -72,9 +96,28 @@ void BaseMotor::setLeftVoltage(float v) {
   if (v > 0) {
     dir = 1;
   } else {
-    dir = 0
+    dir = 0;
   } 
+  Serial.print("Setting left voltage to ");
+  Serial.println(v);
   digitalWrite(l1, 1 ^ dir ^ MOTOR_LEFT_DIR);
-  digitalWrite(l2, 1 ^ dir ^ MOTOR_LEFT_DIR);
+  digitalWrite(l2, 0 ^ dir ^ MOTOR_LEFT_DIR);
   analogWrite(le, speed);
+
+  return;
+
+  Serial.print("Setting digital pin");
+  Serial.println(l1);
+  Serial.println(1 ^ dir ^ MOTOR_LEFT_DIR);
+  Serial.println(digitalRead(l1));
+
+  Serial.print("Setting digital pin");
+  Serial.println(l2);
+  Serial.println(0 ^ dir ^ MOTOR_LEFT_DIR);
+  Serial.println(digitalRead(l2));
+
+  Serial.print("Setting analog pin");
+  Serial.println(le);
+  Serial.println(speed);
+  Serial.println(analogRead(le));
 }

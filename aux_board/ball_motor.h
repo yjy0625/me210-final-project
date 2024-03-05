@@ -3,9 +3,9 @@
 
 #include "Arduino.h"
 
-#define BALL_MOTOR_PWM_OUT 10
-#define BALL_MOTOR_POWER_OUT1 9
-#define BALL_MOTOR_POWER_OUT2 8
+#define BALL_MOTOR_PWM_OUT 5
+#define BALL_MOTOR_POWER_OUT1 7
+#define BALL_MOTOR_POWER_OUT2 6
 
 class BallMotor {
 public:

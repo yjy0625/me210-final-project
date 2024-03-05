@@ -13,7 +13,7 @@ BallMotor::BallMotor(int pwmPin, int powerPin1, int powerPin2) {
 }
 
 void BallMotor::start() {
-  analogWrite(_pwmPin, 150);
+  analogWrite(_pwmPin, 120);
 }
 
 void BallMotor::stop() {

@@ -4,12 +4,12 @@
 #include "Arduino.h"
 
 #define MOTOR1_PWM_OUT 10
-#define MOTOR1_POWER_OUT1 9
-#define MOTOR1_POWER_OUT2 8
+#define MOTOR1_POWER_OUT1 13
+#define MOTOR1_POWER_OUT2 12
 
-#define MOTOR2_PWM_OUT 11
-#define MOTOR2_POWER_OUT1 12
-#define MOTOR2_POWER_OUT2 13
+#define MOTOR2_PWM_OUT 6
+#define MOTOR2_POWER_OUT1 8
+#define MOTOR2_POWER_OUT2 9
 
 
 class BaseMotor {
@@ -24,6 +24,7 @@ public:
   void turnLeft(float v);
   void turnRight(float v);
   void stopAll();
+  void setVoltages(float vl, float vr);
 private:
   static constexpr int MOTOR_LEFT_DIR = 1;
   static constexpr int MOTOR_RIGHT_DIR = 1;
