@@ -32,13 +32,21 @@ void BaseMotor::moveBackward(float v) {
 }
 
 void BaseMotor::turnLeft(float v) {
-  setLeftVoltage(v);
-  setRightVoltage(-v);
+  setLeftVoltage(-v + TURN_SIDE_FAR_DELTA);
+  setRightVoltage(v + TURN_SIDE_NEAR_DELTA);
+  Serial.println("Turning left");
+  Serial.println(v);
+  Serial.println(-v + TURN_SIDE_FAR_DELTA);
+  Serial.println(v + TURN_SIDE_NEAR_DELTA);
 }
 
 void BaseMotor::turnRight(float v) {
-  setLeftVoltage(-v);
-  setRightVoltage(v);
+  setLeftVoltage(v + TURN_SIDE_NEAR_DELTA);
+  setRightVoltage(-v + TURN_SIDE_FAR_DELTA);
+  Serial.println("Turning right");
+  Serial.println(v);
+  Serial.println(v + TURN_SIDE_NEAR_DELTA);
+  Serial.println(-v + TURN_SIDE_FAR_DELTA);
 }
 
 void BaseMotor::stopAll() {
@@ -46,12 +54,34 @@ void BaseMotor::stopAll() {
   setRightVoltage(0);
 }
 
+void BaseMotor::turnLeftPrimitive() {
+  setLeftVoltage(-12.0);
+  setRightVoltage(9.0);
+}
+
+void BaseMotor::turnRightPrimitive() {
+  setLeftVoltage(9.0);
+  setRightVoltage(-12.0);
+}
+
+void BaseMotor::turnLeftSlowPrimitive() {
+  setLeftVoltage(-9.0);
+  setRightVoltage(6.0);
+}
+
+void BaseMotor::turnRightSlowPrimitive() {
+  setLeftVoltage(6.0);
+  setRightVoltage(-9.0);
+}
+
 void BaseMotor::setRightVoltage(float v) {
   v = v * MOTOR_SCALE;
   v = constrain(v, -12, 12); 
   int speed = map(abs(v), 0, 12, 0, 255);
   if (abs(v) < EPS){
-    analogWrite(le, 0);
+    analogWrite(re, 0);
+    digitalWrite(r1, 0);
+    digitalWrite(r2, 0);
     return;
   }
   int dir;
@@ -60,8 +90,8 @@ void BaseMotor::setRightVoltage(float v) {
   } else {
     dir = 0;
   } 
-  Serial.print("Setting right voltage to ");
-  Serial.println(v);
+  // Serial.print("Setting right voltage to ");
+  // Serial.println(v);
   digitalWrite(r1, 1 ^ dir ^ MOTOR_RIGHT_DIR);
   digitalWrite(r2, 0 ^ dir ^ MOTOR_RIGHT_DIR);
   analogWrite(re, speed);
@@ -89,7 +119,9 @@ void BaseMotor::setLeftVoltage(float v) {
   v = constrain(v, -12, 12); 
   int speed = map(abs(v), 0, 12, 0, 255);
   if (abs(v) < EPS){
-    analogWrite(re, 0);
+    analogWrite(le, 0);
+    digitalWrite(l1, 0);
+    digitalWrite(l2, 0);
     return;
   }
   int dir;
@@ -98,8 +130,8 @@ void BaseMotor::setLeftVoltage(float v) {
   } else {
     dir = 0;
   } 
-  Serial.print("Setting left voltage to ");
-  Serial.println(v);
+  // Serial.print("Setting left voltage to ");
+  // Serial.println(v);
   digitalWrite(l1, 1 ^ dir ^ MOTOR_LEFT_DIR);
   digitalWrite(l2, 0 ^ dir ^ MOTOR_LEFT_DIR);
   analogWrite(le, speed);
@@ -121,3 +153,4 @@ void BaseMotor::setLeftVoltage(float v) {
   Serial.println(speed);
   Serial.println(analogRead(le));
 }
+

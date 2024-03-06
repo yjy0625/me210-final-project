@@ -13,7 +13,7 @@ void LineSensor::init() {
 	pinMode(LED_BUILTIN, OUTPUT);
 	digitalWrite(LED_BUILTIN, HIGH);
 
-	for (uint16_t i = 0; i < 400; i++) {
+	for (uint16_t i = 0; i < 250; i++) {
     qtr.calibrate();
   }
   digitalWrite(LED_BUILTIN, LOW);
