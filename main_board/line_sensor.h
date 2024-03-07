@@ -25,15 +25,13 @@ public:
 	void init();
 	void lineTrackerHandler();
 	uint8_t readValues();
-	uint8_t readLeftValue();
-	uint8_t readMidValue();
-	uint8_t readRightValue();
+	uint16_t getMax();
+	uint16_t sensor_l, sensor_m, sensor_r;
 
 private:
 	QTRSensors qtr;
 	const static uint8_t sensorCount = 3;
 	uint16_t sensorValues[sensorCount];
-	uint16_t sensor_l, sensor_r;
 };
 
 #endif

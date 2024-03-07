@@ -8,12 +8,12 @@ LineSensor::LineSensor() {}
 
 void LineSensor::init() {
 	qtr.setTypeRC();
-	qtr.setSensorPins((const uint8_t[]){3,4,5}, sensorCount);
+	qtr.setSensorPins((const uint8_t[]){10,4,3}, sensorCount);
 
 	pinMode(LED_BUILTIN, OUTPUT);
 	digitalWrite(LED_BUILTIN, HIGH);
 
-	for (uint16_t i = 0; i < 250; i++) {
+	for (uint16_t i = 0; i < 500; i++) {
     qtr.calibrate();
   }
   digitalWrite(LED_BUILTIN, LOW);
@@ -38,22 +38,12 @@ void LineSensor::init() {
 uint8_t LineSensor::readValues() {
   uint16_t position = qtr.readLineBlack(sensorValues);
   sensor_l = sensorValues[0];
+  sensor_m = sensorValues[1];
   sensor_r = sensorValues[2];
 }
 
-uint8_t LineSensor::readLeftValue() {
-	uint16_t position = qtr.readLineBlack(sensorValues);
-	return sensorValues[0];
-}
-
-uint8_t LineSensor::readMidValue() {
-	uint16_t position = qtr.readLineBlack(sensorValues);
-	return sensorValues[1];
-}
-
-uint8_t LineSensor::readRightValue() {
-	uint16_t position = qtr.readLineBlack(sensorValues);
-	return sensorValues[2];
+uint16_t LineSensor::getMax() {
+  return max(sensor_l, max(sensor_m, sensor_r));
 }
 
 void LineSensor::lineTrackerHandler() {
@@ -65,19 +55,19 @@ void LineSensor::lineTrackerHandler() {
 
   // Print everything to debug
   /*
-  Serial.print("Sensor L: ");
-  Serial.println(sensor_l);
-  Serial.print("Sensor R: ");
-  Serial.println(sensor_r);
-  Serial.print("e: ");
-  Serial.println(config.e);
-  Serial.print("dedt: ");
-  Serial.println(config.dedt);
-  Serial.print("ul: ");
-  Serial.println(config.ul);
-  Serial.print("ur: ");
-  Serial.println(config.ur);
-  Serial.println();
+  // Serial.print("Sensor L: ");
+  // Serial.println(sensor_l);
+  // Serial.print("Sensor R: ");
+  // Serial.println(sensor_r);
+  // Serial.print("e: ");
+  // Serial.println(config.e);
+  // Serial.print("dedt: ");
+  // Serial.println(config.dedt);
+  // Serial.print("ul: ");
+  // Serial.println(config.ul);
+  // Serial.print("ur: ");
+  // Serial.println(config.ur);
+  // Serial.println();
   */
 
 }

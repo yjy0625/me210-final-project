@@ -23,7 +23,7 @@ void ProximitySensor::init(TimerInterrupt &timer) {
 
 float ProximitySensor::read() {
   float duration = pulseIn(_inputPin, HIGH);
-  return duration / 58;
+  distance = duration / 58;
 }
 
 static void ProximitySensor::update() {

@@ -13,6 +13,7 @@ public:
   ProximitySensor() : ProximitySensor(PROXIMITY_SENSOR_OUTPUT_PIN, PROXIMITY_SENSOR_INPUT_PIN) {}
   void init(TimerInterrupt &timer);
   float read();
+  float distance;
 private:
   static int _outputPin, _inputPin;
   static int cnt, on;
