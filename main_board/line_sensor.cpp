@@ -47,7 +47,12 @@ uint16_t LineSensor::getMax() {
 }
 
 void LineSensor::lineTrackerHandler() {
-  config.e = ((int)sensor_l - (int)sensor_r) * 0.001 / 300;
+  if(flip) {
+    config.e = ((int)sensor_r - (int)sensor_l) * 0.001 / 300;
+  }
+  else {
+    config.e = ((int)sensor_l - (int)sensor_r) * 0.001 / 300;
+  }
   config.dedt = (config.e - config.e_old) / config.dt;
   config.ul = -(config.e * config.kp + config.dedt * config.kd) + config.FWSpeed; 
   config.ur = (config.e * config.kp + config.dedt * config.kd) + config.FWSpeed; 

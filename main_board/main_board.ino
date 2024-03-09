@@ -10,7 +10,7 @@
 #include "TimerInterrupt.h"
 //#include "ISR_Timer.h"
 #include <Keyboard.h>
-#include <Arduino.h>
+#include <Arduino.h>   
 #include <QTRSensors.h>
 
 #define LINE_TRACKER_1_TIME 10000
@@ -60,9 +60,19 @@ ProximitySensor proxSensor;
 
 
 void setup() {
-  // Serial.begin(9600);
-  // Serial.println("Start");
+  if(Serial) {
+    Serial.begin(9600);
+    Serial.println("Start");
+  }
+
   delay(1000);
+  pinMode(BALL_MOTOR_CONTROL_PIN, OUTPUT);
+  stopBallMotor();
+
+  pinMode(A2, OUTPUT);
+  digitalWrite(A2, 0);
+  checkSwitch();
+
   baseMotor = BaseMotor();
   proxSensor.init(ITimer1);
   // Serial.println("Prox sensor initialized");
@@ -73,10 +83,6 @@ void setup() {
   ITimer2.init();
   ITimer2.setFrequency(lineSensor.controllerConfig.freq, lineTrackerTimerHandler);
 
-  pinMode(BALL_MOTOR_CONTROL_PIN, OUTPUT);
-  stopBallMotor();
-
-
   //Serial.println("Initialized");
   delay(5000);
 }
@@ -86,6 +92,29 @@ void lineTrackerTimerHandler(){
 
   lineSensor.lineTrackerHandler();
   baseMotor.setVoltages(lineSensor.controllerConfig.ul, lineSensor.controllerConfig.ur);
+}
+
+void checkSwitch() {
+  // set which side we are on based on switch
+  pinMode(A5, INPUT);
+  pinMode(A4, OUTPUT);
+  if(analogRead(A5) > 500) {
+    if(Serial) {
+      Serial.println("switch high");
+    }
+    // turn clockwise => switch; counterclockwise => do not switch
+    baseMotor.switchLeftRight();
+    lineSensor.flip = true;
+    digitalWrite(A4, 1); // send high and low value
+    digitalWrite(A2, 1); // send value available
+  }
+  else {
+    if(Serial) {
+      Serial.println("switch low");
+    }
+    digitalWrite(A4, 0);
+    digitalWrite(A2, 1);
+  }
 }
 
 void loop() {
@@ -124,13 +153,14 @@ void loop() {
 
     // 0
     if (state == CALIBRATION_STATE){
+      if(Serial) {
+        Serial.print("Proximity: ");
+        Serial.println(distance);
+      }
       if (!calibrated1){
         if (!calibrated1 && (distance > 30.0)) {
-          
           baseMotor.turnRightPrimitive();
         } else {
-          // Serial.print("Proximity: ");
-          // Serial.println(distance);
           baseMotor.stopAll(); 
           calibrated1 = true;
         }
@@ -138,8 +168,6 @@ void loop() {
         if (!calibrated2 && (distance > 100.0 || distance < 86.0)) {
           baseMotor.turnLeftPrimitive();
         } else {
-          // Serial.print("Proximity: ");
-          // Serial.println(distance);
           baseMotor.stopAll(); 
           calibrated2 = true;
         }

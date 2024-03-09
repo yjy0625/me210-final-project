@@ -27,6 +27,7 @@ public:
 	uint8_t readValues();
 	uint16_t getMax();
 	uint16_t sensor_l, sensor_m, sensor_r;
+  bool flip;
 
 private:
 	QTRSensors qtr;

@@ -19,7 +19,7 @@ public:
   BaseMotor() : BaseMotor(MOTOR1_PWM_OUT, MOTOR1_POWER_OUT1, MOTOR1_POWER_OUT2,
                             MOTOR2_PWM_OUT, MOTOR2_POWER_OUT1, MOTOR2_POWER_OUT2) {}
 
-  void switchLeftRight();
+  // void switchLeftRight();
   
   void moveForward(float v);
   void moveBackward(float v);
@@ -34,20 +34,24 @@ public:
   void turnRightFixedBlockAgainstContactZone();
   void turnLeftFixedBlockShootingZone();
 
+  void switchLeftRight();
+
   void stopAll();
   void setVoltages(float vl, float vr);
 private:
-  static constexpr int MOTOR_LEFT_DIR = 1;
-  static constexpr int MOTOR_RIGHT_DIR = 0;
   static constexpr float MOTOR_SCALE = 1.166;
   static constexpr float EPS = 0.1;
   static constexpr float TURN_SIDE_NEAR_DELTA = -3.0;
   static constexpr float TURN_SIDE_FAR_DELTA = -2.0;
   static constexpr float CONTACT_TURN_TIME = 1420;
-  
+
+  bool switching;
   int le, l1, l2, re, r1, r2;
+  int left_dir, right_dir;
+  
   void setLeftVoltage(float v);
   void setRightVoltage(float v);
+  void swap(int& a, int& b);
 };
 
 #endif
